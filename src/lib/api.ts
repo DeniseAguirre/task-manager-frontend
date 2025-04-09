@@ -21,12 +21,20 @@ export interface UpdateTaskData {
   completed?: boolean;
 }
 
+const handleFetchError = async (response: Response) => {
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    const errorMessage =
+      errorData.message || `Error: ${response.status} ${response.statusText}`;
+    throw new Error(errorMessage);
+  }
+  return response;
+};
+
 export async function getTasks(): Promise<Task[]> {
   try {
     const response = await fetch(`${API_URL}/tasks`);
-    if (!response.ok) {
-      throw new Error("Error al obtener las tareas");
-    }
+    await handleFetchError(response);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -38,9 +46,7 @@ export async function getTasks(): Promise<Task[]> {
 export async function getTask(id: string): Promise<Task> {
   try {
     const response = await fetch(`${API_URL}/tasks/${id}`);
-    if (!response.ok) {
-      throw new Error("Error al obtener la tarea");
-    }
+    await handleFetchError(response);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -58,9 +64,7 @@ export async function createTask(taskData: CreateTaskData): Promise<Task> {
       },
       body: JSON.stringify(taskData),
     });
-    if (!response.ok) {
-      throw new Error("Error al crear la tarea");
-    }
+    await handleFetchError(response);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -81,9 +85,7 @@ export async function updateTask(
       },
       body: JSON.stringify(taskData),
     });
-    if (!response.ok) {
-      throw new Error("Error al actualizar la tarea");
-    }
+    await handleFetchError(response);
     const data = await response.json();
     return data;
   } catch (error) {
@@ -97,9 +99,7 @@ export async function deleteTask(id: string): Promise<void> {
     const response = await fetch(`${API_URL}/tasks/${id}`, {
       method: "DELETE",
     });
-    if (!response.ok) {
-      throw new Error("Error al eliminar la tarea");
-    }
+    await handleFetchError(response);
   } catch (error) {
     console.error(`Error en deleteTask(${id}):`, error);
     throw error;
