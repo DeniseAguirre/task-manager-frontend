@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import TaskForm from "@/components/TaskForm";
-import { CreateTaskData, createTask } from "@/lib/api";
+import { type CreateTaskData, createTask } from "@/lib/api";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { showError, showSuccess } from "@/lib/swal";
 
 export default function NewTaskPage() {
   const router = useRouter();
@@ -17,11 +18,19 @@ export default function NewTaskPage() {
       setIsSubmitting(true);
       setError(null);
       await createTask(taskData);
+      await showSuccess(
+        "¡Tarea creada!",
+        "La tarea se ha creado correctamente"
+      );
       router.push("/tasks");
       router.refresh();
     } catch (err) {
       setError("Error al crear la tarea. Por favor intenta de nuevo.");
       console.error(err);
+      showError(
+        "Error",
+        "No se pudo crear la tarea. Por favor intenta de nuevo."
+      );
     } finally {
       setIsSubmitting(false);
     }

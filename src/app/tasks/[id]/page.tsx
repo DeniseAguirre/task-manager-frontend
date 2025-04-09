@@ -1,17 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   getTask,
   updateTask,
   deleteTask,
-  UpdateTaskData,
-  Task,
+  type UpdateTaskData,
+  type Task,
 } from "@/lib/api";
 import TaskForm from "@/components/TaskForm";
 import { AlertCircle, ArrowLeft, Loader2, Trash2 } from "lucide-react";
+import { confirmAction, showError, showSuccess } from "@/lib/swal";
 
 export default function EditTaskPage() {
   const router = useRouter();
@@ -31,8 +32,11 @@ export default function EditTaskPage() {
         const data = await getTask(id);
         setTask(data);
       } catch (err) {
-        setError("Error al cargar la tarea. Por favor intenta de nuevo.");
+        const errorMsg =
+          "Error al cargar la tarea. Por favor intenta de nuevo.";
+        setError(errorMsg);
         console.error(err);
+        showError("Error", errorMsg);
       } finally {
         setLoading(false);
       }
@@ -46,26 +50,46 @@ export default function EditTaskPage() {
       setIsSubmitting(true);
       setError(null);
       await updateTask(id, taskData);
+      await showSuccess(
+        "¡Tarea actualizada!",
+        "La tarea se ha actualizado correctamente"
+      );
       router.push("/tasks");
       router.refresh();
     } catch (err) {
-      setError("Error al actualizar la tarea. Por favor intenta de nuevo.");
+      const errorMsg =
+        "Error al actualizar la tarea. Por favor intenta de nuevo.";
+      setError(errorMsg);
       console.error(err);
+      showError("Error", errorMsg);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleDelete = async () => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar esta tarea?")) {
+    const confirmed = await confirmAction(
+      "¿Estás seguro de que deseas eliminar esta tarea?",
+      "Esta acción no se puede deshacer",
+      "warning"
+    );
+
+    if (confirmed) {
       try {
         setIsDeleting(true);
         await deleteTask(id);
+        await showSuccess(
+          "Tarea eliminada",
+          "La tarea se ha eliminado correctamente"
+        );
         router.push("/tasks");
         router.refresh();
       } catch (err) {
-        setError("Error al eliminar la tarea. Por favor intenta de nuevo.");
+        const errorMsg =
+          "Error al eliminar la tarea. Por favor intenta de nuevo.";
+        setError(errorMsg);
         console.error(err);
+        showError("Error", errorMsg);
       } finally {
         setIsDeleting(false);
       }

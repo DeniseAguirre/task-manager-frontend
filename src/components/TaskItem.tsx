@@ -1,8 +1,9 @@
+"use client";
+
 import { useState } from "react";
 import Link from "next/link";
-
+import type { Task } from "@/lib/api";
 import { CheckCircle, Circle, Edit, Trash2, Loader2 } from "lucide-react";
-import { Task } from "@/lib/api";
 
 interface TaskItemProps {
   readonly task: Task;

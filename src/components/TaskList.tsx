@@ -1,6 +1,6 @@
-import { deleteTask, updateTask, Task } from "@/lib/api";
-
+import { type Task, updateTask, deleteTask } from "@/lib/api";
 import TaskItem from "./TaskItem";
+import { confirmAction, showError, showToast } from "@/lib/swal";
 
 interface TaskListProps {
   readonly tasks: Task[];
@@ -17,18 +17,28 @@ export default function TaskList({
     try {
       const updatedTask = await updateTask(id, { completed });
       onTaskUpdate(updatedTask);
+      showToast(`Tarea ${completed ? "completada" : "marcada como pendiente"}`);
     } catch (error) {
       console.error("Error al actualizar el estado de la tarea:", error);
+      showError("Error", "No se pudo actualizar el estado de la tarea");
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm("¿Estás seguro de que deseas eliminar esta tarea?")) {
+    const confirmed = await confirmAction(
+      "¿Estás seguro?",
+      "Esta acción no se puede deshacer",
+      "warning"
+    );
+
+    if (confirmed) {
       try {
         await deleteTask(id);
         onTaskDelete(id);
+        showToast("Tarea eliminada correctamente");
       } catch (error) {
         console.error("Error al eliminar la tarea:", error);
+        showError("Error", "No se pudo eliminar la tarea");
       }
     }
   };
