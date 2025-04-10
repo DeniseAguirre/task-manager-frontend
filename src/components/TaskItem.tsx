@@ -39,8 +39,8 @@ export default function TaskItem({
 
   return (
     <div
-      className={`border rounded-lg p-4 transition-all ${
-        task.completed ? "bg-gray-50" : "bg-white"
+      className={` rounded-lg p-4 transition-all ${
+        task.completed ? "bg-slate-900" : "bg-slate-950"
       }`}
     >
       <div className="flex items-start gap-3">
@@ -66,7 +66,7 @@ export default function TaskItem({
         <div className="flex-1 min-w-0">
           <div
             className={`font-medium ${
-              task.completed ? "line-through text-gray-500" : "text-gray-900"
+              task.completed ? "line-through text-gray-300" : "text-white"
             }`}
           >
             {task.title}
@@ -74,7 +74,7 @@ export default function TaskItem({
           {task.description && (
             <p
               className={`mt-1 text-sm ${
-                task.completed ? "text-gray-400" : "text-gray-600"
+                task.completed ? "text-gray-400" : "text-gray-500"
               }`}
             >
               {task.description}
@@ -88,7 +88,7 @@ export default function TaskItem({
         <div className="flex flex-shrink-0 gap-2">
           <Link
             href={`/tasks/${task.id}`}
-            className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
+            className="p-1 text-gray-400 hover:text-purple-600 transition-colors"
             aria-label="Editar"
           >
             <Edit className="h-4 w-4" />
