@@ -50,7 +50,7 @@ export default function TaskForm({
       <div className="space-y-1">
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-300"
         >
           Título <span className="text-red-600">*</span>
         </label>
@@ -59,8 +59,8 @@ export default function TaskForm({
           id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.title ? "border-red-500" : "border-gray-300"
+          className={`w-full placeholder-white text-white px-3 py-2 bg-slate-800 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            errors.title ? "border-red-500" : "border-slate-800"
           }`}
           placeholder="Ingresa el título de la tarea"
           required
@@ -71,7 +71,7 @@ export default function TaskForm({
       <div className="space-y-1">
         <label
           htmlFor="description"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-300"
         >
           Descripción
         </label>
@@ -79,7 +79,7 @@ export default function TaskForm({
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border placeholder-white text-white bg-slate-800 border-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows={3}
           placeholder="Describe la tarea (opcional)"
         />
@@ -91,9 +91,9 @@ export default function TaskForm({
           id="completed"
           checked={completed}
           onChange={(e) => setCompleted(e.target.checked)}
-          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
         />
-        <label htmlFor="completed" className="ml-2 block text-sm text-gray-700">
+        <label htmlFor="completed" className="ml-2 block text-sm text-gray-300">
           Tarea completada
         </label>
       </div>
@@ -102,7 +102,7 @@ export default function TaskForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-pink-500 to-violet-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70"
         >
           {isSubmitting ? (
             <>
