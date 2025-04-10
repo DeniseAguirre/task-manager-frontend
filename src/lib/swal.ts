@@ -4,6 +4,8 @@ const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
   showConfirmButton: false,
+  color: "#ffffff",
+  background: "#1e293b",
   timer: 3000,
   timerProgressBar: true,
   didOpen: (toast) => {
@@ -21,6 +23,8 @@ export const confirmAction = async (
     title,
     text,
     icon,
+    color: "#ffffff",
+    background: "#1e293b",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
@@ -37,6 +41,8 @@ export const showError = (title: string, text?: string) => {
     text,
     icon: "error",
     confirmButtonColor: "#3085d6",
+    color: "#ffffff",
+    background: "#1e293b",
   });
 };
 
@@ -46,6 +52,8 @@ export const showSuccess = (title: string, text?: string) => {
     text,
     icon: "success",
     confirmButtonColor: "#3085d6",
+    color: "#ffffff",
+    background: "#1e293b",
   });
 };
 
@@ -56,6 +64,8 @@ export const showToast = (
   return Toast.fire({
     icon,
     title,
+    color: "#ffffff",
+    background: "#1e293b",
   });
 };
 
