@@ -69,7 +69,7 @@ export default function TasksPage() {
               onClick={() => setFilter("all")}
               className={`px-4 py-2 text-sm font-medium rounded-l-md ${
                 filter === "all"
-                  ? "bg-violet-500 text-white"
+                  ? "bg-pink-500 text-white"
                   : "bg-slate-900 text-white hover:bg-slate-950"
               }`}
             >
@@ -79,7 +79,7 @@ export default function TasksPage() {
               onClick={() => setFilter("pending")}
               className={`px-4 py-2 text-sm font-medium ${
                 filter === "pending"
-                  ? "bg-violet-500 text-white"
+                  ? "bg-pink-500 text-white"
                   : "bg-slate-900 text-white hover:bg-slate-950"
               } border-l border-gray-600`}
             >
@@ -89,7 +89,7 @@ export default function TasksPage() {
               onClick={() => setFilter("completed")}
               className={`px-4 py-2 text-sm font-medium rounded-r-md ${
                 filter === "completed"
-                  ? "bg-violet-500 text-white"
+                  ? "bg-pink-500 text-white"
                   : "bg-slate-900 text-white hover:bg-slate-950"
               } border-l border-gray-600`}
             >
