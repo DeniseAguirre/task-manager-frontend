@@ -3,7 +3,7 @@ import { ChevronRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen bg-slate-950">
+    <main className="flex min-h-screen bg-slate-950 bg-[url(/bg-2.png)] bg-cover bg-no-repeat bg-blend-color-burn">
       <div className="w-full space-y-8 p-8 flex flex-col items-center justify-center">
         <div className="text-center">
           <h1 className="bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-6xl font-extrabold text-transparent">

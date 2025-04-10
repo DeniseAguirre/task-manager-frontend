@@ -91,7 +91,7 @@ export default function TaskForm({
           id="completed"
           checked={completed}
           onChange={(e) => setCompleted(e.target.checked)}
-          className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+          className="h-4 w-4 accent-pink-500 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
         />
         <label htmlFor="completed" className="ml-2 block text-sm text-gray-300">
           Tarea completada
