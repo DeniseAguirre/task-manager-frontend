@@ -39,7 +39,7 @@ export default function TaskItem({
 
   return (
     <div
-      className={` rounded-lg p-4 transition-all ${
+      className={`rounded-lg p-4 transition-all ${
         task.completed ? "bg-slate-900" : "bg-slate-950"
       }`}
     >
@@ -65,21 +65,25 @@ export default function TaskItem({
 
         <div className="flex-1 min-w-0">
           <div
-            className={`font-medium ${
+            className={`font-medium truncate ${
               task.completed ? "line-through text-gray-300" : "text-white"
             }`}
+            title={task.title}
           >
             {task.title}
           </div>
+
           {task.description && (
             <p
-              className={`mt-1 text-sm ${
+              className={`mt-1 text-sm overflow-hidden ${
                 task.completed ? "text-gray-400" : "text-gray-500"
               }`}
+              title={task.description}
             >
               {task.description}
             </p>
           )}
+
           <div className="mt-2 text-xs text-gray-400">
             Creada: {new Date(task.createdAt).toLocaleDateString()}
           </div>
