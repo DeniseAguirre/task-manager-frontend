@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, FormEvent } from "react";
 import { Loader2 } from "lucide-react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 interface TaskFormProps {
   initialData?: {
@@ -18,35 +19,35 @@ interface TaskFormProps {
   isEditing?: boolean;
 }
 
+const validationSchema = Yup.object({
+  title: Yup.string()
+    .max(80, "Máximo 80 caracteres")
+    .required("El título es obligatorio"),
+  description: Yup.string().max(240, "Máximo 240 caracteres"),
+});
+
 export default function TaskForm({
   initialData = { title: "", description: "", completed: false },
   onSubmit,
   isSubmitting,
   isEditing = false,
 }: TaskFormProps) {
-  const [title, setTitle] = useState(initialData.title);
-  const [description, setDescription] = useState(initialData.description);
-  const [completed, setCompleted] = useState(initialData.completed);
-  const [errors, setErrors] = useState<{ title?: string }>({});
+  const formik = useFormik({
+    initialValues: initialData,
+    validationSchema,
+    onSubmit,
+  });
 
-  const validate = (): boolean => {
-    const newErrors: { title?: string } = {};
-    if (!title.trim()) {
-      newErrors.title = "El título es obligatorio";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (validate()) {
-      onSubmit({ title, description, completed });
-    }
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    formik.setFieldValue("description", e.target.value);
+    e.target.style.height = "auto";
+    e.target.style.height = `${e.target.scrollHeight}px`;
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div className="space-y-1">
         <label
           htmlFor="title"
@@ -57,29 +58,30 @@ export default function TaskForm({
         <input
           type="text"
           id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className={`w-full placeholder-white text-white px-3 py-2 bg-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.title
-              ? "border border-red-400"
-              : title.length === 80
-              ? " bg-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400"
-              : " bg-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          {...formik.getFieldProps("title")}
+          className={`w-full truncate overflow-hidden text-ellipsis placeholder-white text-white px-3 py-2 bg-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 ${
+            formik.errors.title && formik.touched.title
+              ? "border border-red-400 focus:ring-red-400"
+              : formik.values.title.length === 80
+              ? "focus:ring-red-400"
+              : "focus:ring-blue-500"
           }`}
           placeholder="Ingresa el título de la tarea"
           maxLength={80}
-          required
         />
+
         <div>
-          {errors.title && (
-            <p className="text-red-600 text-sm">{errors.title}</p>
+          {formik.errors.title && formik.touched.title && (
+            <p className="text-red-600 text-sm">{formik.errors.title}</p>
           )}
           <p
             className={`text-gray-400 text-xs text-right py-2 ${
-              title.length === 80 ? "text-red-500" : "text-gray-400"
+              formik.values.title.length === 80
+                ? "text-red-500"
+                : "text-gray-400"
             }`}
           >
-            {title.length}/80 caracteres
+            {formik.values.title.length}/80 caracteres
           </p>
         </div>
       </div>
@@ -93,23 +95,26 @@ export default function TaskForm({
         </label>
         <textarea
           id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className={`w-full px-3 py-2 placeholder-white text-white ${
-            description.length === 240
-              ? " bg-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
-              : " bg-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          {...formik.getFieldProps("description")}
+          onChange={handleDescriptionChange}
+          className={`w-full break-words truncate overflow-hidden text-ellipsis px-3 py-2 placeholder-white text-white bg-slate-800 rounded-md shadow-sm focus:outline-none focus:ring-2 ${
+            formik.values.description.length === 240
+              ? "focus:ring-red-500"
+              : "focus:ring-blue-500"
           }`}
           rows={3}
           placeholder="Describe la tarea (opcional)"
           maxLength={240}
         />
+
         <p
           className={`text-xs text-right ${
-            description.length === 240 ? "text-red-500" : "text-gray-400"
+            formik.values.description.length === 240
+              ? "text-red-500"
+              : "text-gray-400"
           }`}
         >
-          {description.length}/240 caracteres
+          {formik.values.description.length}/240 caracteres
         </p>
       </div>
 
@@ -117,8 +122,10 @@ export default function TaskForm({
         <input
           type="checkbox"
           id="completed"
-          checked={completed}
-          onChange={(e) => setCompleted(e.target.checked)}
+          checked={formik.values.completed}
+          onChange={(e) =>
+            formik.setFieldValue("completed", e.currentTarget.checked)
+          }
           className="h-4 w-4 accent-pink-500 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
         />
         <label htmlFor="completed" className="ml-2 block text-sm text-gray-300">
