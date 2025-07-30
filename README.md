@@ -1,6 +1,6 @@
 # Gestor de Tareas - Frontend
 
-Este es el frontend de la aplicación de gestión de tareas desarrollada como parte del desafío de ingreso a la Academia ForIT 2025. Esta aplicación permite a los usuarios crear, ver, editar y eliminar tareas, así como marcarlas como completadas.
+Esta aplicación permite a los usuarios crear, ver, editar y eliminar tareas, así como marcarlas como completadas.
 
 ![Página Principal](./screenshots/home.png)
 
